@@ -1,0 +1,1 @@
+export { default } from 'admin-dashboard/components/dashboard/book-issued';

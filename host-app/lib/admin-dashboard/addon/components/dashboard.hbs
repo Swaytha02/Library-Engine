@@ -1,0 +1,54 @@
+<header class="dashboard-header" data-test-dashboard-header>
+    <h1 data-test-dashboard-title>Library Dashboard</h1>
+    <ProfileIcon @settingsRoute="profile.settings"/>
+</header>
+
+
+<section class="dashboard-nav" data-test-nav-menu>
+    <LinkTo class="dashboard-link" @route="dashboard" data-test-nav-link>
+      Overdue Books
+    </LinkTo>
+    <LinkTo class="dashboard-link" @route="dashboard.total-books" data-test-nav-link>
+        Total Books
+    </LinkTo>
+    <LinkTo class="dashboard-link" @route="dashboard.book-issued" data-test-nav-link>
+        Book Issued
+    </LinkTo>
+    <LinkTo class="dashboard-link" @route="dashboard.total-students" data-test-nav-link>
+        Total Students
+    </LinkTo>
+</section>
+
+{{!-- Show overdue books only on the dashboard index --}}
+{{#if (eq this.router.currentRoute.name "admin.dashboard.index")}}
+  <section class="overdue-section" data-test-overdue-section>
+    <h2 data-test-overdue-title>Overdue Books</h2>
+
+    {{#if this.overDueBooks.length}}
+      <table>
+        <thead>
+          <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Student ID</th>
+            <th>Due Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each this.overDueBooks as |book|}}
+            <tr>
+              <td>{{book.id}}</td>
+              <td>{{book.title}}</td>
+              <td>{{book.author}}</td>
+              <td>{{book.studentId}}</td>
+              <td>{{book.dueDate}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <p>No overdue books.</p>
+    {{/if}}
+  </section>
+{{/if}}

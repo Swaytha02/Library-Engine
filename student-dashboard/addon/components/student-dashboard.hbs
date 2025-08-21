@@ -1,0 +1,88 @@
+<header class="dashboard-header">
+  <h1>🎓 Student Dashboard - {{this.student}}</h1>
+  <ProfileIcon />
+</header>
+
+<section class="dashboard-summary">
+  <div class="summary-card">Total Issued: {{this.totalIssued.length}}</div>
+  <div class="summary-card">Overdue Books: {{this.overDueBooks.length}}</div>
+</section>
+
+<section class="book-controls">
+  <label>
+    Sort by:
+    <select class="sort-select" value={{this.sortBy}} {{on "change" this.changeSort}}>
+      <option value="title">Title</option>
+      <option value="author">Author</option>
+    </select>
+  </label>
+</section>
+
+<section class="available-books">
+  <h3>Available Books</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Available</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.sortedBooks as |book|}}
+        {{#if (lt book.issuedCount book.count)}}
+          <tr>
+            <td>{{book.title}}</td>
+            <td>{{book.author}}</td>
+            <td>{{sub book.count book.issuedCount}} / {{book.count}}</td>
+            <td>
+              {{#if (gte book.issuedCount book.count)}}
+                <button type="button" disabled>Full</button>
+              {{else if (or 
+                          (and book.isRequested (eq book.requestedBy this.session.currentUser.id))
+                          (this.hasUserIssued book)
+                        )}}
+                <button type="button" disabled>Requested</button>
+              {{else}}
+                <button type="button" {{on "click" (fn this.requestBook book)}}>Request</button>
+              {{/if}}
+            </td>
+          </tr>
+        {{/if}}
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+<section class="issued-books">
+  <h3>My Issued Books</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.issuedBooks as |book|}}
+        <tr>
+          <td>{{book.title}}</td>
+          <td>{{get book.issuedInfo "0.dueDate"}}</td>
+          <td>
+            {{#if (get book.issuedInfo "0.isOverdue")}}
+              ⚠️ Overdue
+            {{else}}
+              ✅ On Time
+            {{/if}}
+          </td>
+          <td>
+            <button type="button" {{on "click" (fn this.returnBook book)}}>Return</button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

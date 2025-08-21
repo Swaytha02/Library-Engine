@@ -1,0 +1,24 @@
+@use 'login';
+@use 'total-students';
+@use 'books-issued';
+@use 'book-details';
+@use 'dashboard';
+@use 'profile';
+@use 'student-dashboard';
+
+* {
+  margin: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .dashboard-summary {
+    flex-direction: column;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

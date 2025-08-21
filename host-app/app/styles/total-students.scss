@@ -1,0 +1,68 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+
+  .student-details {
+    flex: 1;
+    background-color: #f9f9f9;
+    overflow: hidden;
+  }
+
+  .student-container {
+    width: 350px;
+    background-color: #f0f4ff;
+    border-left: 1px solid #ccc;
+    overflow: hidden;
+  }
+
+  .scroll-area {
+    height: 100%;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .student-item {
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: flex-start;
+
+    &:hover {
+      background-color: #e6ecff;
+    }
+
+    .clickable-student-name {
+      margin-left: 20px;
+    }
+
+    .notification-dot {
+      display: inline-block;
+      margin-top: 4px;
+      width: 10px;
+      height: 10px;
+      background-color: red;
+      border-radius: 50%;
+    }
+  }
+
+  .request-box {
+    background-color: #fff4f4;
+    border: 1px solid #fcc;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+
+    button {
+      margin-right: 1rem;
+    }
+  }
+
+  .edit-student {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+}

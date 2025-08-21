@@ -1,0 +1,12 @@
+<div data-test-overdue-books>
+    <Dashboard::BookDetails>
+        {{#each @books as |book|}}
+            <tr>
+                <td>{{book.id}}</td>
+                <td>{{book.title}}</td>
+                <td>{{book.author}}</td>
+                <td>{{book.count}}</td>
+            </tr>
+        {{/each}}
+    </Dashboard::BookDetails>
+</div>

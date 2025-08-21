@@ -1,0 +1,33 @@
+.books-table-container {
+  padding: 20px;
+  overflow-x: auto;
+
+  .books-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+
+    th {
+      background-color: #219bf1;
+      color: white;
+      text-align: left;
+      padding: 12px;
+      font-weight: 600;
+    }
+
+    td {
+      padding: 12px;
+      border-top: 1px solid #ccc;
+    }
+
+    tr {
+      &:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      &:hover {
+        background-color: #f1f1f1;
+      }
+    }
+  }
+}

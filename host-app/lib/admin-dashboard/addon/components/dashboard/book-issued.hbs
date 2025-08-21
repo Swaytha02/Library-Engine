@@ -1,0 +1,62 @@
+{{yield}}<section class="add-student-section" data-test-book-issued>
+  <button class="add-student-btn" type="button" {{on "click" this.toggleStudentModal}}>Add Student</button>
+</section>
+
+{{#if this.isStudentModalOpen}} 
+  <div class="modal-overlay">
+    <div class="modal">
+      <h2>Add New Student</h2>
+      <input 
+      type="text" 
+      placeholder="Name" 
+      value={{this.newStudentName}}
+      {{on "input" this.updateStudentNameField}} />
+      
+      <input 
+      type="text" 
+      placeholder="Password" 
+      value={{this.newStudentUsername}}
+      {{on "input" this.updateStudentUsernameField}} />
+      
+      <input 
+      type="text" 
+      placeholder="Username" 
+      value={{this.newStudentPassword}}
+      {{on "input" this.updateStudentPassword}} />
+      
+      <div class="modal-buttons">
+        <button type="button" {{on "click" this.addStudent}}>Save</button>
+        <button type="button" {{on "click" this.toggleStudentModal}}>Cancel</button>
+      </div>
+    </div>
+  </div>
+{{/if}}
+
+<Dashboard::BookDetails @isIssued={{true}}>
+    {{#each this.books as |book|}}
+    <tr>
+        <td>{{book.id}}</td>
+        <td>{{book.title}}</td>
+        <td>{{book.author}}</td>
+        <td>{{sub book.count book.issuedCount}} / {{book.count}}</td>
+        <td>
+          {{#if book.issuedCount}}
+            {{book.issuedCount}}
+          {{else}}
+            Not Assigned
+          {{/if}}
+        </td>
+        <td>
+            <div class="assign-student">
+                <input
+                    type="text"
+                    placeholder="Student ID"
+                    value={{this.studentInputs.[book.id]}}
+                    {{on "input" (fn this.updateStudentId book.id)}}
+                />
+                <button type="button" {{on "click" (fn this.assignBookToStudent book.id)}}>Assign</button>
+            </div>
+        </td>
+    </tr>
+    {{/each}}
+</Dashboard::BookDetails>

@@ -1,0 +1,102 @@
+<div class="layout-container" data-test-total-students>
+    <section class="student-details">
+        <div class="scroll-area">
+            {{#if this.selectedStudent}}
+                {{#if this.isEditing}}
+                    <div class="edit-student">
+                        <Input type="text" @value={{this.editStudent.name}} @onInput={{fn (mut this.editStudent.name)}} />
+                        <button type="button" {{on 'click' this.saveUpdatedName}}>Save</button>
+                        <button type="button" {{on 'click' this.cancelEdit}}>Cancel</button>
+                    </div>
+                {{else}}
+                    <div class="edit-student">
+                        <h2>{{this.selectedStudent.name}}</h2>
+                        <button type="button" {{on 'click' (set this "isEditing" true)}}>Edit</button>
+                    </div>
+                {{/if }}
+
+                <p><strong>ID:</strong> {{this.selectedStudent.id}}</p>
+
+                {{!-- Pending Request Section --}}
+                {{#let (this.getStudentRequest this.selectedStudent.id) as |request|}}
+                    {{#if request}}
+                        <div class="request-box">
+                            <p><strong>Request:</strong> {{request.bookTitle}}</p>
+                            <button type="button" {{on 'click' (fn this.approveRequest request)}}>OK</button>
+                            <button type="button" {{on 'click' (fn this.denyRequest request)}}>Deny</button>
+                        </div>
+                    {{else}}
+                        <p>No pending requests.</p>
+                    {{/if}}
+                {{/let}}
+
+                {{!-- Issued Books section--}}
+                <h4>Issued Books</h4>
+                {{#if this.issuedBooks.length}}
+                <ul>
+                    {{#each this.issuedBooks as |book|}}
+                    <li>
+                        {{book.title}} - 
+                        {{#each book.issuedInfo as |info|}}
+                        {{#if (eq info.studentId this.selectedStudent.id)}}
+                            Due on {{info.dueDate}}
+                        {{/if}}
+                        {{/each}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{else}}
+                <p>No books currently issued.</p>
+                {{/if}}
+
+                {{!-- Library Summary --}}
+                <h4>Library Summary</h4>
+                <ul>
+                    <li>Total Books: {{this.booksSummary.total}}</li>
+                    <li>Issued Books: {{this.booksSummary.issued}}</li>
+                    <li>Available Books: {{this.booksSummary.available}}</li>
+                </ul>
+
+                <h5>All Books:</h5>
+                <ul>
+                    {{#each this.booksSummary.books as |book|}}
+                        <li>
+                            {{book.title}} - Available: {{sub book.count book.issuedCount}} / {{book.count}}
+                        </li>
+                    {{/each}}
+                </ul>
+
+                {{!-- Return Request Notification --}}
+                {{#each this.returnRequests as |request|}}
+                    {{#if (eq request.studentId this.selectedStudent.id)}}
+                        <div class="request-box">
+                            <p><strong>Return:</strong> {{request.bookTitle}}</p>
+                            <button type="button" {{on "click" (fn this.approveReturn request)}}>Accept Return</button>
+                            <button type="button" {{on "click" (fn this.denyReturn request)}}>Reject</button>
+                        </div>
+                    {{/if}}
+                {{/each}}
+            {{else}}
+                <p>Select a student to view details</p>
+            {{/if}}
+        </div>
+    </section>
+
+    <section class="student-container">
+        <div class="scroll-area">
+            <h3>Students</h3>
+            <ul>
+                {{#each this.allStudents as |student|}}
+                    <li class="student-item" {{on "click" (fn this.selectStudent student)}}>
+                        {{#if (or (this.hasPendingRequest student.id) (this.hasReturnRequest student.id))}}
+                            <span class="notification-dot"></span>
+                        {{/if}}
+                        <span class="clickable-student-name">
+                            {{if (and this.isEditing (eq this.selectedStudent.id student.id)) this.editStudent.name student.name}}
+                        </span>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+    </section>
+</div>
